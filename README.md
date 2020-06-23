@@ -35,14 +35,14 @@ Enable the SSH command with password access.  In order to use the touchscreen dr
 <br/>http://www.lcdwiki.com/MHS-3.5inch_RPi_Display#How_to_use_in_the_Raspberry.2FUbuntu_Mate.2FKali.2FRetropie_system
 2. Once the screen is mounted turn on the Pi.  (Note: The display will remain blank until the drivers have been installed.)
 3. Using another computer ssh into the Pi. (e.g.```ssh pi@192.168.1.57```, change IP to the address exposed by the ```ip addr``` command from earlier.)  
-4. Since the base OS has already been installed go to step 3 of the lcdwiki instructions.
+4. Since the base OS has already been installed go to step 3 of the lcdwiki instructions.  This will reboot the Pi and the desktop should now appear on the touchscreen.
   ```
   git clone https://github.com/goodtft/LCD-show.git
   chmod -R 755 LCD-show
   cd LCD-show/
   sudo ./MHS35-show
   ```
-  This will reboot the Pi and the desktop should now appear on the touchscreen.
+  
 
 5. Optionally, this might be a good place to make an image of the micro SD card.
 
