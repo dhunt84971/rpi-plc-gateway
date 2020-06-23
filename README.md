@@ -43,7 +43,7 @@ cd LCD-show/
 sudo ./MHS35-show
 ```
 This will reboot the Pi and the desktop should now appear on the touchscreen.
-5. Optionally, this might be a good place to make an image of the micro SD card.
+<br/>5. Optionally, this might be a good place to make an image of the micro SD card.
 
 ### Router and Port Forwarding Configuration
 
