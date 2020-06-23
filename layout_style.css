@@ -1,0 +1,168 @@
+/*#region STANDARD COLORS */
+:root {
+    --btnBoxTop_bgColor: #5a5a5a;
+    --btnBoxTop_txColor: white;
+    --btnBoxItem_bgColor: #a0a0a0;
+    --btnBoxItem_txColor: #1B1D1F;
+    --logo_bgColor: #a2a2a2;
+    --app_bgColor: #1B1D1F;
+    --btnSelected_bgColor: #08a9c5;
+    --btnSelected_borderColor: #f4bc43;
+    --btnAppSelected_bgColor: #08a9c5;
+    --btnAppSelected_txColor: #1B1D1F;
+    --divPenButtons_bgColor: #1B1D1F;
+    --divAppTitleBar_bgColor: #f0c871;
+    --divTrendNavSelected_bgColor: green;
+}
+/*#endregion STANDARD COLORS */
+
+/*#region DESKTOP APP BEHAVIORS */
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+    -webkit-user-select: none;
+    user-select: none;
+    /*  cursor: default; */
+}
+/*#endregion DESKTOP APP BEHAVIORS */
+
+/*#region INITIAL STYLES */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing : border-box;
+  font: 13px "Roboto", Helvetica, Arial, san-serif;
+}
+
+/*#endregion INITIAL STYLES */
+
+/*#region LAYOUT STYLES */
+.container {
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.hbox {
+    display: flex;
+    flex-direction: row;
+    flex: 0 0 auto;
+    padding: 5px;
+}
+
+.hboxFill {
+    display: flex;
+    flex-direction: row;
+    flex: 0 1 auto;
+    padding: 5px;
+    width: 100%;
+    min-width: 0%;
+}
+
+.vbox {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    padding: 5px;
+}
+
+.vboxFill {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    padding: 5px;
+    /*height: 100%;
+    min-height: 0%;
+    */
+}
+
+.flexCenter {
+    justify-content: center;
+    align-content: center;
+}
+
+.noMargin {
+    margin: 0 !important;
+}
+
+.noPadding {
+    padding: 0 !important;
+}
+
+.horizDivider {
+    padding: 0;
+    min-width: 5px;
+}
+
+.ltGray {
+    background-color: #5a5a5a;
+}
+
+.dkGray {
+    background-color: #222;
+}
+.horizSpacer {
+    flex: 1 0 auto;
+}
+
+.vertDivider {
+    padding: 0;
+    min-height: 5px;
+}
+
+.indentPadding{
+    padding-left: 5px;
+}
+
+.leftMargin {
+  margin-left: 5px;
+}
+
+.left2xMargin {
+  margin-left: 10px;
+}
+
+.left3xMargin {
+  margin-left: 15px;
+}
+
+.indent {
+  margin-left: 30px;  
+}
+
+.horDivider {
+    display: flex;
+    height:2px;
+    background: #999;
+    margin: 0px;
+}
+
+.flushRight{
+    margin-right: 0px !important;
+}
+
+.flushLeft{
+    margin-left: 0px !important;
+}
+
+.flushTop{
+    margin-top: 0px !important;
+}
+
+.flushBottom{
+    margin-bottom: 0px !important;
+}
+
+.hide {
+    display: none !important;
+}
+
+.stackVert {
+    padding-top: 0px !important;
+}
+
+.overflowAuto {
+    overflow: auto;
+}
+/*#endregion LAYOUT STYLES */

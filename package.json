@@ -1,0 +1,15 @@
+{
+  "name": "rpi-plc-gateway",
+  "version": "0.1.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "2.0.18",
+    "ping": "^0.2.3"
+  }
+}
