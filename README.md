@@ -58,7 +58,7 @@ Uncomment the following line by removing the # from the front:
 ```
 net.ipv4.ip_forward=1
 ```
-Then press <Ctrl>+<x> then <y> then <Enter> to save the changes to the file.
+Then press **Ctrl+x**, then **y**, then **Enter**, to save the changes to the file.
   
 Make the change take effect by running the following commands:
 ```
