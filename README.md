@@ -192,7 +192,7 @@ From 192.168.1.57 icmp_seq=3 Destination Protocol Unreachable
 From 192.168.1.57 icmp_seq=4 Destination Protocol Unreachable
 From 192.168.1.57 icmp_seq=5 Destination Protocol Unreachable
 ```
-At this point if you connected the Pi's hardwired Ethernet port to the machine's local network you would be able to connect to the PLC from any computer on the wireless network using the Pi's wlan0 IP address as if it were the PLC's address.  The rest of the instructions involve installing the Electron desktop application for easily managing the router.
+At this point, if you connect the Pi's hardwired Ethernet port to the machine's local network you will be able to connect to the PLC from any computer on the wireless network using the Pi's wlan0 IP address as if it were the PLC's address.  The rest of the instructions involve installing the Electron desktop application for easily managing the router.
 
 ## Installation
 
