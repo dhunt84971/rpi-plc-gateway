@@ -47,6 +47,39 @@ Enable the SSH command with password access.  In order to use the touchscreen dr
 5. Optionally, this might be a good place to make an image of the micro SD card.
 
 ### Router and Port Forwarding Configuration
+A quick note about this section.  The following steps are simply for setting up some basic port forwarding and NAT to the PLC.  No consideration has been given to security of any kind.  It is not recommended that you use this on an unsecured network or to connect over the internet on a public IP.
+
+#### Enable Port Forwarding
+To enable port forwarding, ssh into the Pi and edit the /etc/sysctl.conf file:
+```
+sudo nano /etc/sysctl.conf
+```
+Uncomment the following line by removing the # from the front:
+```
+net.ipv4.ip_forward=1
+```
+Then press <Ctrl>+<x> then <y> then <Enter> to save the changes to the file.
+  
+Make the change take effect by running the following commands:
+```
+sudo sysctl -p
+sudo sysctl --system
+```
+If this is done correctly several message should appear similar to the following:
+```
+* Applying /etc/sysctl.d/98-rpi.conf ...
+kernel.printk = 3 4 1 3
+vm.min_free_kbytes = 16384
+* Applying /etc/sysctl.d/99-sysctl.conf ...
+net.ipv4.ip_forward = 1
+* Applying /etc/sysctl.d/protect-links.conf ...
+fs.protected_hardlinks = 1
+fs.protected_symlinks = 1
+* Applying /etc/sysctl.conf ...
+net.ipv4.ip_forward = 1
+```
+#### IP Tables Configuration
+
 
 ## Installation
 
