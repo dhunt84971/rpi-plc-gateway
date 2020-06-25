@@ -79,7 +79,120 @@ fs.protected_symlinks = 1
 net.ipv4.ip_forward = 1
 ```
 #### IP Tables Configuration
+Install the following package so iptables are persistent.
+```
+sudo apt-get udpate
+sudo apt-get install iptables-persistent
+```
+During the installation you will be asked if you want to save the current rules.  Just say yes.  This will create a /etc/iptables/rules.v4 and /etc/iptables/rules.v6 file.
 
+Open and edit the rules.v4 file:
+```
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+:UDP - [0:0]
+:TCP - [0:0]
+:ICMP - [0:0]
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A INPUT -i lo -j ACCEPT
+-A INPUT -m conntrack --ctstate INVALID -j DROP
+-A INPUT -p udp -m conntrack --ctstate NEW -j UDP
+-A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j TCP
+-A INPUT -p icmp -m conntrack --ctstate NEW -j ICMP
+-A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
+-A INPUT -p tcp -j REJECT --reject-with tcp-reset
+-A INPUT -j REJECT --reject-with icmp-proto-unreachable
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 44818 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 1433 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 8080 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+-A FORWARD -i wlan0 -o eth0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A FORWARD -i eth0 -o wlan0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+-A TCP -p tcp -m tcp --dport 22 -j ACCEPT
+-A TCP -p tcp -m tcp --dport 443 -j ACCEPT
+COMMIT
+*raw
+:PREROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+*nat
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 44818 -j DNAT --to-destination 100.100.100.50
+-A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 44818 -j SNAT --to-source 100.100.100.101
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 1433 -j DNAT --to-destination 100.100.100.51
+-A POSTROUTING -d 100.100.100.51/24 -o eth0 -p tcp -m tcp --dport 1433 -j SNAT --to-source 100.100.100.101
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 8080 -j DNAT --to-destination 100.100.100.51
+-A POSTROUTING -d 100.100.100.51/24 -o eth0 -p tcp -m tcp --dport 8080 -j SNAT --to-source 100.100.100.101
+COMMIT
+*security
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+COMMIT
+
+```
+##### Explanation of rules.v4
+
+In this example case the EthernetIP PLC is at 100.100.100.50.  Port 44818 is forwarded using the line:
+```
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 44818 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+```
+In addition to forwarding port 44818 our example industrial machine also has an HMI at 100.100.100.51 which hosts a webserver at port 8080 and a SQL server using the standard TCP port 1433.  Since we would like to gain access to these as well the following lines are added:
+```
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 1433 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 8080 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+```
+We also want to be able to continue to ssh into the Raspberry Pi, so the following lines are added:
+```
+-A TCP -p tcp -m tcp --dport 22 -j ACCEPT
+-A TCP -p tcp -m tcp --dport 443 -j ACCEPT
+```
+Now that the ports will be forwarded between the wireless (wlan0) and hardwired (eth0) connections we use NAT (Network Address Translation) to allow direct connections from outside of the hardwired network without setting the gateway on the PLC.  The key here is that the PLC will think the conenction is local.
+```
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 44818 -j DNAT --to-destination 100.100.100.50
+-A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 44818 -j SNAT --to-source 100.100.100.101
+```
+The HMI SQL Server and Webserver ports are nat'ed as well:
+```
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 1433 -j DNAT --to-destination 100.100.100.51
+-A POSTROUTING -d 100.100.100.51/24 -o eth0 -p tcp -m tcp --dport 1433 -j SNAT --to-source 100.100.100.101
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 8080 -j DNAT --to-destination 100.100.100.51
+-A POSTROUTING -d 100.100.100.51/24 -o eth0 -p tcp -m tcp --dport 8080 -j SNAT --to-source 100.100.100.101
+```
+More information on the rest of the settings can be found here:
+https://www.digitalocean.com/community/tutorials/how-to-forward-ports-through-a-linux-gateway-with-iptables
+
+#### Save the Changes
+Using **Ctrl**+**x** then **y** and **Enter**, save the changes made to the file.  Then verify that the file is valid by using:
+```
+sudo iptables-restore -t < /etc/iptables/rules.v4
+```
+Finally, reboot the Pi to make the changes active.
+```
+sudo reboot
+```
+If your configuration matches the settings above you will still be able to make an ssh connection to the Pi, but if you try to ping the Pi it will respond like this:
+```
+ping 192.168.1.57
+PING 192.168.1.57 (192.168.1.57) 56(84) bytes of data.
+From 192.168.1.57 icmp_seq=1 Destination Protocol Unreachable
+From 192.168.1.57 icmp_seq=2 Destination Protocol Unreachable
+From 192.168.1.57 icmp_seq=3 Destination Protocol Unreachable
+From 192.168.1.57 icmp_seq=4 Destination Protocol Unreachable
+From 192.168.1.57 icmp_seq=5 Destination Protocol Unreachable
+```
+At this point if you connected the Pi's hardwired Ethernet port to the machine's local network you would be able to connect to the PLC from any computer on the wireless network using the Pi's wlan0 IP address as if it were the PLC's address.  The rest of the instructions involve installing the Electron desktop application for easily managing the router.
 
 ## Installation
 
