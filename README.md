@@ -65,7 +65,7 @@ Make the change take effect by running the following commands:
 sudo sysctl -p
 sudo sysctl --system
 ```
-If this is done correctly several message should appear similar to the following:
+If this is done correctly several messages should appear similar to the following:
 ```
 * Applying /etc/sysctl.d/98-rpi.conf ...
 kernel.printk = 3 4 1 3
