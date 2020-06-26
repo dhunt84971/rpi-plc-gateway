@@ -8,7 +8,7 @@ This project is intended to contain everything that is required to build a 3.5" 
 A Raspberry Pi with a 3.5" touchscreen was selected to host the application because of its small size and low price.  The standard Raspbian Desktop OS was selected as the operating system because of its wide support and well documented instructions.  Nodejs and Electron will be used as the platform for the router manager application.  Electron makes it easy to create a small user friendly interface and also provides the opportunity to create a webbased version in the future.  Nodejs is well supported.
 
 ## Typical Architecture
-Typically this will be used to access a machine's local network.  Connect an Ethernet cable between the port on the Pi and the switch in the main control panel that is connected to the PLC.  Then connect to the office network over wifi.  (It is assumed that the Ethernet port will be statically addresses and the wifi will be DHCP (or dynamically) addressed.
+Typically this will be used to access a machine's local network.  Connect an Ethernet cable between the port on the Pi and the switch in the main control panel that is connected to the PLC.  Then connect to the office network over wifi.  (It is assumed that the Ethernet port will be statically addressed and the wifi will be DHCP (or dynamically) addressed.
 
 <img src="./documentation/figure1-architecture.png">
 
