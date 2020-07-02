@@ -101,38 +101,56 @@ Open and edit the rules.v4 file:
 -A INPUT -p udp -m conntrack --ctstate NEW -j UDP
 -A INPUT -p tcp -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j TCP
 -A INPUT -p icmp -m conntrack --ctstate NEW -j ICMP
--A INPUT -p udp -j REJECT --reject-with icmp-port-unreachable
--A INPUT -p tcp -j REJECT --reject-with tcp-reset
--A INPUT -j REJECT --reject-with icmp-proto-unreachable
+
+# Accept ping requests.
+-A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+
+# Forward all outgoing traffic.
+-A FORWARD -i eth0 -o wlan0 -j ACCEPT
+
+# Port forwarding rules follow:
+-A FORWARD -i wlan0 -o eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 44818 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 1433 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 8080 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
--A FORWARD -i wlan0 -o eth0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# Forward all outgoing traffic.
 -A FORWARD -i eth0 -o wlan0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+# Accept SSH connections.
 -A TCP -p tcp -m tcp --dport 22 -j ACCEPT
 -A TCP -p tcp -m tcp --dport 443 -j ACCEPT
 COMMIT
+
 *raw
 :PREROUTING ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 COMMIT
+
 *nat
-:PREROUTING ACCEPT [0:0]
-:INPUT ACCEPT [0:0]
-:POSTROUTING ACCEPT [0:0]
-:OUTPUT ACCEPT [0:0]
+:PREROUTING ACCEPT [5056:1082707]
+:INPUT ACCEPT [1:60]
+:POSTROUTING ACCEPT [16:1369]
+:OUTPUT ACCEPT [14:1277]
+
+# NAT Port forwarding rules follow:
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 44818 -j DNAT --to-destination 100.100.100.50
 -A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 44818 -j SNAT --to-source 100.100.100.101
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 1433 -j DNAT --to-destination 100.100.100.51
 -A POSTROUTING -d 100.100.100.51/24 -o eth0 -p tcp -m tcp --dport 1433 -j SNAT --to-source 100.100.100.101
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 8080 -j DNAT --to-destination 100.100.100.51
 -A POSTROUTING -d 100.100.100.51/24 -o eth0 -p tcp -m tcp --dport 8080 -j SNAT --to-source 100.100.100.101
+
+# Route all outgoing traffic.
+-A POSTROUTING -o wlan0 -j MASQUERADE
 COMMIT
+
 *security
 :INPUT ACCEPT [0:0]
 :FORWARD ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 COMMIT
+
 *mangle
 :PREROUTING ACCEPT [0:0]
 :INPUT ACCEPT [0:0]
@@ -140,6 +158,7 @@ COMMIT
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
 COMMIT
+
 
 ```
 ##### Explanation of rules.v4
@@ -182,17 +201,9 @@ Finally, reboot the Pi to make the changes active.
 ```
 sudo reboot
 ```
-If your configuration matches the settings above you will still be able to make an ssh connection to the Pi, but if you try to ping the Pi it will respond like this:
-```
-ping 192.168.1.57
-PING 192.168.1.57 (192.168.1.57) 56(84) bytes of data.
-From 192.168.1.57 icmp_seq=1 Destination Protocol Unreachable
-From 192.168.1.57 icmp_seq=2 Destination Protocol Unreachable
-From 192.168.1.57 icmp_seq=3 Destination Protocol Unreachable
-From 192.168.1.57 icmp_seq=4 Destination Protocol Unreachable
-From 192.168.1.57 icmp_seq=5 Destination Protocol Unreachable
-```
-At this point, if you connect the Pi's hardwired Ethernet port to the machine's local network you will be able to connect to the PLC from any computer on the wireless network using the Pi's wlan0 IP address as if it were the PLC's address.  The rest of the instructions involve installing the Electron desktop application for easily managing the router.
+If your configuration matches the settings above you will still be able to make an ssh connection to the Pi and ping the Pi.
+
+At this point, if you connect the Pi's hardwired Ethernet port to the machine's local network you will be able to connect to the PLC from any computer on the wireless network using the Pi's wlan0 IP address as if it were the PLC's address.  The rest of the instructions involve installing the Electron desktop application for easily managing the router.  If you are configuring a headless (i.e. no touchscreen) version you can skip directly to the Example Connection Using RSLinx.  Remember to substitute your IP addresses where applicable.
 
 ## Installation
 
