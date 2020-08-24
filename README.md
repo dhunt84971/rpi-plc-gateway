@@ -177,7 +177,7 @@ We also want to be able to continue to ssh into the Raspberry Pi, so the followi
 -A TCP -p tcp -m tcp --dport 22 -j ACCEPT
 -A TCP -p tcp -m tcp --dport 443 -j ACCEPT
 ```
-Now that the ports will be forwarded between the wireless (wlan0) and hardwired (eth0) connections we use NAT (Network Address Translation) to allow direct connections from outside of the hardwired network without setting the gateway on the PLC.  The key here is that the PLC will think the conenction is local.
+Now that the ports will be forwarded between the wireless (wlan0) and hardwired (eth0) connections we use NAT (Network Address Translation) to allow direct connections from outside of the hardwired network without setting the gateway on the PLC.  The key here is that the PLC will think the connection is local.
 ```
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 44818 -j DNAT --to-destination 100.100.100.50
 -A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 44818 -j SNAT --to-source 100.100.100.101
