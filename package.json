@@ -10,6 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "electron": "2.0.18",
+    "lib-app-settings": "^1.1.1",
+    "pi-wifi": "^1.2.0",
     "ping": "^0.2.3"
   }
 }

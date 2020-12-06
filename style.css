@@ -34,6 +34,7 @@ body::-moz-selection { background: transparent; }
   border-bottom-left-radius: 5px;
   height: 30px;
   margin: 10px;
+  min-width: 100px;
 }
 
 .btnRight {
@@ -61,7 +62,41 @@ body::-moz-selection { background: transparent; }
   border-color: var(--btnSelected_borderColor) !important;
 }
 
+.txtInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--btnBoxTop_bgColor);
+  color: var(--btnBoxTop_txColor);
+  border: 3px solid var(--btnBoxTop_bgColor);
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  height: 30px;
+  margin: 10px;
+  min-width: 100px;
+}
+
 /*#endregion PAGE COMPONENTS */
+
+/*#region PAGE LAYOUTS */
+.overflowAuto {
+  overflow: auto;
+}
+
+.overflowHidden {
+  overflow: hidden;
+}
+
+.overflowScrollY {
+  overflow-y: scroll;
+}
+/*#endregion PAGE LAYOUTS */
 
 /*#region PAGE AREAS */
 .top {
@@ -138,6 +173,10 @@ body::-moz-selection { background: transparent; }
 .invalid {
   background-color: red !important;
   color: white !important;
+}
+
+.hide {
+  display: none;
 }
 
 /*#endregion APPLICATION SPECIFIC */
