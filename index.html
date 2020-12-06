@@ -14,7 +14,7 @@
   
 
   <div class="container">
-    <div class="vboxFill">
+    <div class="vboxFill" id="divHomePage">
       <div class="vboxFill"></div>
       <div class= "hboxFill">
         <div class= "hboxFill"></div>
@@ -38,9 +38,28 @@
       </div>
       <div class="vboxFill"></div>
       <div class= "hboxFill">
+        <div class= "hboxFill"></div>
+        <div class= "btn btnBottom" id="btnSettings">SETTINGS</div>
+      </div>
+    </div>
+    <div class="vboxFill hide" id="divSettingsPage">
+      
+      <div class= "hboxFill">
+        <div class= "hboxFill"></div>
+        <div class= "hbox leftLabel">SSID</div>
+        <div class= "vboxFill noPadding noMargin overflowHidden">
+          <input class="txtInput" id="txtSSID">
+          <div class="vbox overflowAuto" id="lstSSIDs">
+            <!-- SSID List-->
+          </div>
+        </div>
+        <div class= "hboxFill"></div>
+      </div>
+      <div class="vboxFill"></div>
+      <div class= "hboxFill">
         <div class= "btn btnBottom" id="btnReboot">REBOOT</div>
         <div class= "hboxFill"></div>
-        <div class= "btn btnBottom">SETTINGS</div>
+        <div class= "btn btnBottom" id="btnHome">HOME</div>
       </div>
     </div>
   </div>
