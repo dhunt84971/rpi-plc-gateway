@@ -14,6 +14,8 @@ Typically this will be used to access a machine's local network.  Connect an Eth
 
 ## Bill of Material
 1. Raspberry Pi 3B+, 16GB Micro SD Card and 2.0A power adapter. (The touchscreen and case that have been selected will not work with the Pi 4.)
+<br/>https://www.amazon.com/dp/B07BC6WH7V/?coliid=I1Q90XSBR95ZRB&colid=2THHKHND6ZW5T&psc=1&ref_=lv_ov_lig_dp_it
+<br/>https://www.amazon.com/Sandisk-Ultra-Micro-UHS-I-Adapter/dp/B073K14CVB/ref=sr_1_3?dchild=1&keywords=16gb+microsd+card&qid=1610735824&s=electronics&sr=1-3
 2. Raspberry Pi 3.5" touchscreen and case. 
 <br/>https://smile.amazon.com/gp/product/B07N38B86S/ref=ppx_yo_dt_b_asin_title_o01_s00?ie=UTF8&psc=1
 3. Circular magnet (1.26" diameter) with double-sided adhesive.
