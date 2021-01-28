@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "electron": "2.0.18",
+    "electron": "9.4.0",
     "ping": "^0.2.3"
   }
 }
