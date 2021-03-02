@@ -17,6 +17,8 @@ const libAppSettings = require("lib-app-settings");
 var piWifi = require('pi-wifi');
 //#endregion REQUIRES EXTERNAL MODULES
 
+
+
 //#region GLOBAL DECLARATIONS
 const settingsFile = ".settings";
 const appSettings = new libAppSettings(settingsFile);
@@ -25,7 +27,6 @@ var plcIP = "100.100.100.50";
 var plcCheckTimeSet = 10;
 var plcCheckTimeAcc = 0;
 var plcChecking = false;
-
 let appDir = path.dirname(require.main.filename);
 
 // Page component references.
@@ -34,6 +35,33 @@ var lblLANIP = document.getElementById("lblLANIP");
 var lblPLCIP = document.getElementById("lblPLCIP");
 var txtSSID = document.getElementById("txtSSID");
 var lstSSIDs = document.getElementById("lstSSIDs");
+
+//#region ONSCREEN KEYBOARD
+var lowerKeys = ["\`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 
+    "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\", 
+    "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "\'", " ", " ", 
+    "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", " ", " ", " "];
+var shiftKeys = ["~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", 
+    "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "|", 
+    "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"", " ", " ", 
+    "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", " ", " ", " "];
+
+
+function loadKeys(keys){
+    let row = 1;
+    let keysPerRow = 13;
+    let i = 1;
+    for (let key of keys){
+        addItemtoDiv(`row${row}`, key, "btnKey");
+        i += 1;
+        if (i > keysPerRow){
+            i=1;
+            row += 1;
+        }
+    }
+}
+
+//#endregion ONSCREEN KEYBOARD
 
 function plcCheckConn(){
     plcChecking = true;
@@ -110,14 +138,15 @@ function addItemtoDiv(divById, itemInnerText, classAdd) {
     var newItem = document.createElement("div");
     newItem.innerText = itemInnerText;
     newItem.classList.add(classAdd);
-    document.getElementById(divById).appendChild(newItem);
+    return document.getElementById(divById).appendChild(newItem);
 }
 
 function addSSID(ssid){
     var newItem = document.createElement("div");
     newItem.innerText = ssid;
     newItem.classList.add("btn");
-    lstSSIDs.appendChild(newItem);
+    newItem.classList.add("btnTight");
+    lstConnectSSIDs.appendChild(newItem);
     newItem.addEventListener("click", (e)=>{
         selectSSID(e.target);
     });
@@ -126,7 +155,7 @@ function addSSID(ssid){
 function loadSSIDs(){
     piWifi.listNetworks(function(err, networksArray) {
         if (err) {
-          return console.error(err.message);
+          return console.log(err.message);
         }
         for (let network of networksArray){
             addSSID(network.ssid);
@@ -135,7 +164,7 @@ function loadSSIDs(){
 }
 
 function selectSSID(el){
-    txtSSID.value = el.innerText;
+    lblSSID.value = el.innerText;
 }
 
 
@@ -154,6 +183,9 @@ async function init() {
 
     // Fill the page components
     getIPAddresses();
+
+    // Load the keyboard
+    loadKeys(lowerKeys);
 
     // Run the connected status loop.
     loop();
@@ -185,18 +217,35 @@ function ssid_clicked(e){
     selectSSID(e.target);
 }
 
-document.getElementById("btnSettings").addEventListener("click", ()=>{
-    document.getElementById("divHomePage").classList.add("hide");
-    document.getElementById("divSettingsPage").classList.remove("hide");
+btnSettings.addEventListener("click", ()=>{
+    divHomePage.classList.add("hide");
+    divSettingsPage.classList.remove("hide");
+    divKeyboardPage.classList.add("hide");
 });
 
-document.getElementById("btnHome").addEventListener("click", ()=>{
-    document.getElementById("divHomePage").classList.remove("hide");
-    document.getElementById("divSettingsPage").classList.add("hide");
+btnHome.addEventListener("click", ()=>{
+    divHomePage.classList.remove("hide");
+    divSettingsPage.classList.add("hide");
+    divKeyboardPage.classList.add("hide");
 });
 
-document.getElementById("btnReboot").addEventListener("click", () => {
+btnHome2.addEventListener("click", ()=>{
+    divHomePage.classList.remove("hide");
+    divSettingsPage.classList.add("hide");
+    divKeyboardPage.classList.add("hide");
+});
+
+btnKeyboard.addEventListener("click", ()=>{
+    divHomePage.classList.add("hide");
+    divSettingsPage.classList.add("hide");
+    divKeyboardPage.classList.remove("hide");
+});
+
+btnReboot.addEventListener("click", () => {
     reboot();
 });
+
+
+
 
 init();
