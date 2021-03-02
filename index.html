@@ -6,14 +6,14 @@
   <title>rpi-plc-gateway</title>
   <link rel="stylesheet" href="layout_style.css">
   <link rel="stylesheet" href="style.css">
+  
 
 </head>
 
 <body>
-
-  
-
   <div class="container">
+   
+    <!--#region HOME PAGE-->
     <div class="vboxFill" id="divHomePage">
       <div class="vboxFill"></div>
       <div class= "hboxFill">
@@ -42,29 +42,68 @@
         <div class= "btn btnBottom" id="btnSettings">SETTINGS</div>
       </div>
     </div>
-    <div class="vboxFill hide" id="divSettingsPage">
-      
-      <div class= "hboxFill">
-        <div class= "hboxFill"></div>
-        <div class= "hbox leftLabel">SSID</div>
-        <div class= "vboxFill noPadding noMargin overflowHidden">
-          <input class="txtInput" id="txtSSID">
-          <div class="vbox overflowAuto" id="lstSSIDs">
-            <!-- SSID List-->
+    <!--#endregion HOME PAGE-->
+    
+    <!--#region SETTINGS PAGE-->
+    <div class="vboxFill overflowHidden hide" id="divSettingsPage">
+      <div class= "hboxFill overflowHidden">
+        <div class="vboxFill overflowHidden">
+          <div class="hbox noMargin noPadding">
+            <div class="leftLabel">SSID:</div>
+            <div class="vboxFill borderedLabel" id="lblSSID">Solar</div>
+          </div>
+          <div class="label">Select to Connect-</div>
+          <div class="vboxFill overflowAuto" id="lstConnectSSIDs">
+            <!-- Connect SSID List-->
+            
           </div>
         </div>
-        <div class= "hboxFill"></div>
+        <div class="horizDivider gray"></div>
+        <div class= "vboxFill overflowHidden">
+          <div class="btn btnScan">Scan for WIFI</div>
+          <div class="label">Select to Add-</div>
+          <div class="vboxFill overflowAuto" id="lstAddSSIDs">
+            <!-- SSID List-->
+            <div class="btn btnTight" id="btnTest">Solar</div>
+            <div class="btn btnTight">Customer 1</div>
+            <div class="btn btnTight">Phone</div>
+          </div>
+        </div>
       </div>
       <div class="vboxFill"></div>
       <div class= "hboxFill">
         <div class= "btn btnBottom" id="btnReboot">REBOOT</div>
         <div class= "hboxFill"></div>
+        <div class= "btn btnBottom" id="btnKeyboard">KEYBOARD</div>
         <div class= "btn btnBottom" id="btnHome">HOME</div>
       </div>
     </div>
+    <!--#endregion SETTINGS PAGE-->
+
+    <!--#region KEYBOARD-->
+    <div class="vboxFill overflowHidden hide" id="divKeyboardPage">
+      <div class= "hboxFill overflowHidden" id="row1">
+        
+      </div>
+      <div class= "hboxFill overflowHidden" id="row2">
+        
+      </div>
+      <div class= "hboxFill overflowHidden" id="row3">
+        
+      </div>
+      <div class= "hboxFill overflowHidden" id="row4"></div>
+      <div class="vboxFill"></div>
+      <div class= "hboxFill">
+        <div class= "hboxFill"></div>
+        <div class= "btn btnBottom" id="btnHome2">HOME</div>
+      </div>
+    </div>
+
+
+    <!--#endregion KEYBOARD-->
+    
   </div>
-  
-  <script src="script.js"></script>
+  <script src="script.js"></script> 
 </body>
 
 </html>

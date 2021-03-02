@@ -19,7 +19,7 @@ function createWindow() {
   win.setAlwaysOnTop(true);
   
   // Open the DevTools.
-  win.webContents.openDevTools()
+  //win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on("closed", () => {
@@ -28,6 +28,7 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
 }
 
 //#region IPC EVENTS
