@@ -37,7 +37,7 @@
         <div class= "hboxFill"></div>
       </div>
       <div class="vboxFill"></div>
-      <div class= "hboxFill">
+      <div class= "hboxFill  bottomBox">
         <div class= "hboxFill"></div>
         <div class= "btn btnBottom" id="btnSettings">SETTINGS</div>
       </div>
@@ -46,7 +46,8 @@
     
     <!--#region SETTINGS PAGE-->
     <div class="vboxFill overflowHidden hide" id="divSettingsPage">
-      <div class= "hboxFill overflowHidden">
+      <div class="hboxFill overflowHidden">
+        <div class="hboxFill noPadding noMargin">
         <div class="vboxFill overflowHidden">
           <div class="hbox noMargin noPadding">
             <div class="leftLabel">SSID:</div>
@@ -55,26 +56,25 @@
           <div class="label">Select to Connect-</div>
           <div class="vboxFill overflowAuto" id="lstConnectSSIDs">
             <!-- Connect SSID List-->
-            
           </div>
         </div>
+        </div>
         <div class="horizDivider gray"></div>
+        <div class="hboxFill noPadding noMargin">
         <div class= "vboxFill overflowHidden">
-          <div class="btn btnScan">Scan for WIFI</div>
+          <div class="btn btnScan" id="btnScanWifi">Scan for WIFI</div>
           <div class="label">Select to Add-</div>
           <div class="vboxFill overflowAuto" id="lstAddSSIDs">
             <!-- SSID List-->
-            <div class="btn btnTight" id="btnTest">Solar</div>
-            <div class="btn btnTight">Customer 1</div>
-            <div class="btn btnTight">Phone</div>
           </div>
+        </div>
         </div>
       </div>
       <div class="vboxFill"></div>
-      <div class= "hboxFill">
+      <div class= "hboxFill  bottomBox">
         <div class= "btn btnBottom" id="btnReboot">REBOOT</div>
         <div class= "hboxFill"></div>
-        <div class= "btn btnBottom" id="btnKeyboard">KEYBOARD</div>
+        <!--<div class= "btn btnBottom" id="btnKeyboard">KEYBOARD</div>-->
         <div class= "btn btnBottom" id="btnHome">HOME</div>
       </div>
     </div>
@@ -82,6 +82,8 @@
 
     <!--#region KEYBOARD-->
     <div class="vboxFill overflowHidden hide" id="divKeyboardPage">
+      <div class="label">Enter password:</div>
+      <input type="text" id="txtKeyboardEntry">
       <div class= "hboxFill overflowHidden" id="row1">
         
       </div>
@@ -92,10 +94,16 @@
         
       </div>
       <div class= "hboxFill overflowHidden" id="row4"></div>
+      <div class= "hboxFill overflowHidden" id="row5">
+        <div class="btn" id="btnKeyShift">Shift</div>
+        <div class="btn" id="btnKeySpace">Space</div>
+        <div class="btn" id="btnKeyBackSp">BackSp</div>
+      </div>
       <div class="vboxFill"></div>
-      <div class= "hboxFill">
+      <div class= "hboxFill bottomBox">
+        <div class= "btn btnBottom" id="btnKeyCancel">Cancel</div>
         <div class= "hboxFill"></div>
-        <div class= "btn btnBottom" id="btnHome2">HOME</div>
+        <div class= "btn btnBottom" id="btnKeyEnter">Enter</div>
       </div>
     </div>
 
