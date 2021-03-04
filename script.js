@@ -286,7 +286,7 @@ function ssidConnect(ssid, password){
             showPage("Home");
         }
         else {
-            showWarningMessageBox(`Connection failed.\n${err.message}`);
+            showWarningMessageBox(`Connection failed.\nReboot if error persists.\n${err}\n${err.message}`);
         }
     });
 }
