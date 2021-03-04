@@ -15,12 +15,15 @@ const os = require('os');
 const ping = require('ping');
 const libAppSettings = require("lib-app-settings");
 var piWifi = require('pi-wifi');
-var ssidConnectRequest = "";
 //#endregion REQUIRES EXTERNAL MODULES
 
 //#region GLOBAL DECLARATIONS
 const settingsFile = ".settings";
 const appSettings = new libAppSettings(settingsFile);
+const netInterface = "wlan0";
+const wpaFilename = "/etc/wpa_supplicant/wpa_supplicant.conf";
+var ssidConnectRequest = "";
+var saveSSIDs = [];
 var quitApp = false;
 var plcIP = "100.100.100.50";
 var plcCheckTimeSet = 10;
@@ -165,101 +168,84 @@ function removeChildren(elId) {
     }
 }
 
-function ShowPage(page){
+function showPage(page){
     divHomePage.classList.add("hide");
     divSettingsPage.classList.add("hide");
     divKeyboardPage.classList.add("hide");
+    divMessagePage.classList.add("hide");
     if (page=="Home") divHomePage.classList.remove("hide");
     else if (page=="Settings") divSettingsPage.classList.remove("hide");
     else if (page=="Keyboard") divKeyboardPage.classList.remove("hide");
+    else if (page=="Message") divMessagePage.classList.remove("hide");
 }
 //#endregion DOM HELPER FUNCTIONS
 
-
 //#region NOTIFICATION WINDOWS
-
 function showWarningMessageBox(message) {
-    const options = {
-        type: "warning",
-        title: "Warning",
-        buttons: ["OK"],
-        message: message,
-    };
-
-    dialog.showMessageBox(null, options);
+    lblMessage.innerText = message;
+    showPage("Message");
 }
 
 function showOKMessageBox(message) {
-    const options = {
-        type: "info",
-        title: "Information",
-        buttons: ["OK"],
-        message: message,
-    };
-
-    dialog.showMessageBox(null, options);
+    lblMessage.innerText = message;
+    showPage("Message");
 }
-
-function showConfirmationBox(message) {
-    const options = {
-        type: "info",
-        title: "Confirm",
-        buttons: ["Yes", "No", "Cancel"],
-        message: message,
-    };
-
-    let response = dialog.showMessageBoxSync(null, options);
-
-    return response == 0;
-}
-
 //#endregion NOTIFICATION WINDOWS
 
-
 //#region SAVED SSID FUNCTIONS
-function addSSID(ssid){
+function addSSID(ssid, index){
     var newItem = document.createElement("div");
     newItem.innerText = ssid;
     newItem.classList.add("btn");
     newItem.classList.add("btnTight");
+    newItem.setAttribute("data-netIndex", index.toString());
     lstConnectSSIDs.appendChild(newItem).addEventListener("click", (e)=>{
         selectSSID(e.target);
     });
 }
+
 
 function loadSSIDs(){
     piWifi.listNetworks(function(err, networksArray) {
         if (err) {
           return console.log(err.message);
         }
+        saveSSIDs = networksArray;
+        console.log(saveSSIDs);
+        let index = 0;
         for (let network of networksArray){
-            addSSID(network.ssid);
+            addSSID(network.ssid, index);
+            index++;
         }
+        addPSKfromWPA();
     });
-}
-
-function getSSIDNetIndex(ssid){
-    let index = 0;
-    if (lstConnectSSIDs.childElementCount > 0){
-        let child = lstConnectSSIDs.firstChild;
-        while (child.innerText != ssid){
-            console.log(child);
-            console.log({index:index, ssid:child.innerText});
-            index += 1;
-            child = child.nextSibling;
-        }
-    }
-    return index;
 }
 
 function selectSSID(el){
     console.log(el.innerText);
-    lblSSID.value = el.innerText;
-    let netId = getSSIDNetIndex(lblSSID.value);
-    console.log(netId);
-    // piWifi.connectToId(0, (err)=>{
-    //     //if (err) showWarningMessageBox(`Connection failed.\n${err.message}`);
-    // });
+    lblSSID.innerText = el.innerText;
+    let netId = parseInt(el.getAttribute("data-netIndex"));
+    ssidConnect(el.innerText, saveSSIDs[netId].psk);
+}
+
+function getConnectedSSID(){
+    piWifi.status(netInterface, (err, status)=>{
+        if (!err){
+            lblSSID.innerText = status.ssid;
+        }
+    });
+}
+
+function addPSKfromWPA(){
+    // ConnectToId is no worky.  This work-around pulls the password from the wpa_supplicant.conf file and makes
+    // a call to Connect instead.  Not super secure because of the direct access to the password, but whatevs.
+    let wpa_data = fs.readFileSync(wpaFilename).toString('utf-8');
+    let networks = wpa_data.split("network=");
+    for (let i=1; i<networks.length; i++){
+        let psk = networks[i].split('psk="')[1].split('"')[0];
+        console.log({index: i, PSK: psk});
+        saveSSIDs[i-1].psk = psk;
+    }
 }
 //#endregion SAVED SSID FUNCTIONS
 
@@ -289,7 +275,7 @@ function scanForSSIDs(){
 
 function getPassword(ssid){
     ssidConnectRequest = ssid;
-    ShowPage("Keyboard");
+    showPage("Keyboard");
     txtKeyboardEntry.value = "";
 }
 
@@ -297,14 +283,14 @@ function ssidConnect(ssid, password){
     piWifi.connect(ssid, password, (err)=>{
         if (!err){
             lblSSID.value = ssid;
-            ShowPage("Home");
+            showPage("Home");
         }
         else {
             showWarningMessageBox(`Connection failed.\n${err.message}`);
         }
     });
 }
-//#region SCANNED SSID FUNCTIONS
+//#endregion SCANNED SSID FUNCTIONS
 
 //#region INITIALIZATION
 async function init() {
@@ -319,6 +305,9 @@ async function init() {
 
     // Load the SSID list.
     loadSSIDs();
+
+    // Get the ssid of the current connection.
+    getConnectedSSID();
 
     // Fill the page components
     getIPAddresses();
@@ -359,15 +348,15 @@ function ssid_clicked(e){
 }
 
 btnSettings.addEventListener("click", ()=>{
-    ShowPage("Settings");
+    showPage("Settings");
 });
 
 btnHome.addEventListener("click", ()=>{
-    ShowPage("Home");
+    showPage("Home");
 });
 
 btnKeyCancel.addEventListener("click", ()=>{
-    ShowPage("Settings");
+    showPage("Settings");
 });
 
 btnReboot.addEventListener("click", () => {
@@ -400,6 +389,10 @@ btnKeyEnter.addEventListener("click", ()=>{
     ssidConnect(ssidConnectRequest, txtKeyboardEntry.value);
 });
 //#endregion KEYBOARD EVENTS
+
+btnMsgOk.addEventListener("click", ()=>{
+    showPage("Home");
+});
 
 //#endregion EVENT HANDLERS
 
