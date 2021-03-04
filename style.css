@@ -201,6 +201,25 @@ body::-moz-selection { background: transparent; }
   margin: 0px;
 }
 
+.labelMessage {
+  border-width: 0px;
+  color: white;
+  height: 50px;
+  margin: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  min-height: 200px;
+  margin: 0px;
+  overflow-wrap: normal;
+}
+
 .btnScan {
   min-height: 30px;
   margin: 0px 8px 0px 5px;
