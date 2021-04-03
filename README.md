@@ -113,6 +113,7 @@ Open and edit the rules.v4 file:
 # Port forwarding rules follow:
 -A FORWARD -i wlan0 -o eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 44818 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 2222 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 1433 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 8080 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
 
@@ -138,6 +139,8 @@ COMMIT
 # NAT Port forwarding rules follow:
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 44818 -j DNAT --to-destination 100.100.100.50
 -A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 44818 -j SNAT --to-source 100.100.100.101
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 2222 -j DNAT --to-destination 100.100.100.50
+-A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 2222 -j SNAT --to-source 100.100.100.101
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 1433 -j DNAT --to-destination 100.100.100.51
 -A POSTROUTING -d 100.100.100.51/24 -o eth0 -p tcp -m tcp --dport 1433 -j SNAT --to-source 100.100.100.101
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 8080 -j DNAT --to-destination 100.100.100.51
@@ -169,7 +172,11 @@ In this example case the EthernetIP PLC is at 100.100.100.50.  Port 44818 is for
 ```
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 44818 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
 ```
-In addition to forwarding port 44818 our example industrial machine also has an HMI at 100.100.100.51 which hosts a webserver at port 8080 and a SQL server using the standard TCP port 1433.  Since we would like to gain access to these as well the following lines are added:
+Adding the following line provides support for older SLC5/05 PLCs which use port 2222:
+```
+-A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 2222 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
+```
+In addition to forwarding port 44818/2222 our example industrial machine also has an HMI at 100.100.100.51 which hosts a webserver at port 8080 and a SQL server using the standard TCP port 1433.  Since we would like to gain access to these as well the following lines are added:
 ```
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 1433 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
 -A FORWARD -i wlan0 -o eth0 -p tcp -m tcp --dport 8080 --tcp-flags FIN,SYN,RST,ACK SYN -m conntrack --ctstate NEW -j ACCEPT
@@ -183,6 +190,8 @@ Now that the ports will be forwarded between the wireless (wlan0) and hardwired 
 ```
 -A PREROUTING -i wlan0 -p tcp -m tcp --dport 44818 -j DNAT --to-destination 100.100.100.50
 -A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 44818 -j SNAT --to-source 100.100.100.101
+-A PREROUTING -i wlan0 -p tcp -m tcp --dport 2222 -j DNAT --to-destination 100.100.100.50
+-A POSTROUTING -d 100.100.100.50/24 -o eth0 -p tcp -m tcp --dport 2222 -j SNAT --to-source 100.100.100.101
 ```
 The HMI SQL Server and Webserver ports are nat'ed as well:
 ```
