@@ -225,3 +225,9 @@ At this point, if you connect the Pi's hardwired Ethernet port to the machine's 
 ### Start on Boot Configuration
 
 ## Example Connection Using RSLinx
+Once the raspberry pi is connected and configured be sure you can ping the raspberry pi's WAN address from the PC that has the Rockwell software installed.  This will be the address you will use to connect to the PLC via RSLinx.  After successfully pinging, launch RSLinx and configure the Ethernet driver by adding the IP address.  In the example video below the raspberry pi is at 10.0.104.54.
+
+<img src="./documentation/rslinx_config.gif">
+
+Now launch Studio 5000 and you should be able to use who active to make a connection to the PLC by selecting it from the list of available devices.
+
