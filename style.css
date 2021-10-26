@@ -32,8 +32,9 @@ body::-moz-selection { background: transparent; }
   border-bottom-right-radius: 5px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  height: 30px;
+  min-height: 30px;
   margin: 10px;
+  min-width: 100px;
 }
 
 .btnRight {
@@ -61,7 +62,45 @@ body::-moz-selection { background: transparent; }
   border-color: var(--btnSelected_borderColor) !important;
 }
 
+.txtInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--btnBoxTop_bgColor);
+  color: var(--btnBoxTop_txColor);
+  border: 3px solid var(--btnBoxTop_bgColor);
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  height: 30px;
+  margin: 10px;
+  min-width: 100px;
+}
+
+#btnKeySpace {
+  min-width: 200px;
+}
+
 /*#endregion PAGE COMPONENTS */
+
+/*#region PAGE LAYOUTS */
+.overflowAuto {
+  overflow: auto;
+}
+
+.overflowHidden {
+  overflow: hidden;
+}
+
+.overflowScrollY {
+  overflow-y: scroll;
+}
+/*#endregion PAGE LAYOUTS */
 
 /*#region PAGE AREAS */
 .top {
@@ -85,19 +124,28 @@ body::-moz-selection { background: transparent; }
 }
 
 .cyan {
-  background-color: cyan;
+  background-color: cyan !important;
 }
 
 .orange {
-  background-color: orange;
+  background-color: orange !important;
 }
 
 .gray {
-  background-color: gray;
+  background-color: gray !important;
 }
 
 .white {
-  background-color: white;
+  background-color: white !important;
+}
+
+.black {
+  background-color: black !important;
+}
+
+.background {
+  background-color: var(--app_bgColor) !important;
+  border-color: var(--app_bgColor) !important;
 }
 
 
@@ -105,16 +153,78 @@ body::-moz-selection { background: transparent; }
 
 /*#region APPLICATION SPECIFIC */
 .leftLabel {
-  border-color: gray;
+  border-width: 1px;
+  border-color: cyan;
   color: cyan;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  height: 30px;
+  line-height: 30px;
+  margin: 0px;
+}
+
+.borderedLabel {
+  background-color: green;
+  border-width: 0px;
+  margin: 0px 8px 0px 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  min-height: 30px;
+  max-height: 30px;
+}
+
+.label {
+  border-width: 0px;
+  color: white;
+  height: 50px;
+  margin: 0px;
   padding-left: 10px;
   padding-right: 10px;
-  margin: 0px 3px 0px 3px;
-  width: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  min-height: 30px;
+  max-height: 30px;
+  margin: 0px;
 }
+
+.labelMessage {
+  border-width: 0px;
+  color: white;
+  height: 50px;
+  margin: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  min-height: 200px;
+  margin: 0px;
+  overflow-wrap: normal;
+}
+
+.btnScan {
+  min-height: 30px;
+  margin: 0px 8px 0px 5px;
+}
+
 
 .btnIP {
   background-color: green;
@@ -128,16 +238,49 @@ body::-moz-selection { background: transparent; }
 
 .btnBottom {
   border-width: 0px;
-  height: 50px;
+  min-height: 50px;
   margin: 0px;
   width: 100px;
   padding-left: 10px;
   padding-right: 10px;
 }
 
+.btnTight {
+  margin: 2px;
+}
+
 .invalid {
   background-color: red !important;
   color: white !important;
+}
+
+.hide {
+  display: none;
+}
+
+.btnKey {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--btnBoxTop_bgColor);
+  color: var(--btnBoxTop_txColor);
+  border: 3px solid var(--btnBoxTop_bgColor);
+  padding: 5px;
+  text-align: center;
+  font-weight: bold;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  height: 30px;
+  margin: 2px;
+  width: 30px;
+}
+
+.bottomBox {
+  min-height: 60px;
+  max-height: 60px;
 }
 
 /*#endregion APPLICATION SPECIFIC */

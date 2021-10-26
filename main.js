@@ -28,6 +28,7 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
 }
 
 //#region IPC EVENTS
