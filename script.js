@@ -280,7 +280,14 @@ function getPassword(ssid){
 }
 
 function ssidConnect(ssid, password){
-    piWifi.connect(ssid, password, (err)=>{
+    var networkDetails = {
+        ssid: ssid,
+    }
+    // Add the password if one was supplied.
+    if (password != ""){
+        networkDetails.password = password
+    }
+    piWifi.connectTo(networkDetails, (err)=>{
         if (!err){
             lblSSID.value = ssid;
             showPage("Home");
