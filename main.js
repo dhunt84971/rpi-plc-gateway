@@ -6,20 +6,32 @@ let win;
 
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 1250, height: 768, frame: false });
+  win = new BrowserWindow({ 
+    width: 1250, 
+    height: 768, 
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
 
   // and load the index.html of the app.
   win.loadFile("index.html");
 
   // Remove Window Menu
   //win.setMenu(null);
-  //win.autoHideMenuBar = true;
+  win.autoHideMenuBar = true;
   win.setMenuBarVisibility(false);
   win.setFullScreen(true);
-  win.setAlwaysOnTop(true);
+  //win.setAlwaysOnTop(true);
   
   // Open the DevTools.
-  //win.webContents.openDevTools()
+  
+  //devtools = new BrowserWindow();
+  //win.loadFile("index.html");
+  //win.webContents.setDevToolsWebContents(devtools.webContents);
+  //win.webContents.openDevTools({mode: 'detach'});
+  
 
   // Emitted when the window is closed.
   win.on("closed", () => {

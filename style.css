@@ -14,6 +14,10 @@ body {
   user-select: none;
 }
 
+* {
+  font: 28px "Roboto", "Helvetica Neue", "Helvetica", Arial, san-serif;
+}
+
 body::selection { background: transparent; }
 body::-moz-selection { background: transparent; }
 

@@ -29,7 +29,7 @@ var plcIP = "100.100.100.50";
 var plcCheckTimeSet = 10;
 var plcCheckTimeAcc = 0;
 var plcChecking = false;
-let appDir = path.dirname(require.main.filename);
+//let appDir = path.dirname(require.main.filename);
 
 // Page component references.
 var lblWANIP = document.getElementById("lblWANIP");
@@ -111,12 +111,12 @@ function getIPAddresses(){
             // this interface has only one ipv4 adress
                 console.log(ifname, iface.address);
             }
-            if (ifname == "eth0"){
+            if (ifname == "enp1s0"){
                 lblLANIP.innerText = iface.address;
                 lblLANIP.classList.remove("invalid");
                 eth0 = true;
             }
-            if (ifname == "wlan0"){
+            if (ifname == "wlp2s0"){
                 lblWANIP.innerText = iface.address;
                 lblWANIP.classList.remove("invalid");
                 wlan0 = true;
